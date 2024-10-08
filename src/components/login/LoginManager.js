@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../AuthContext';
 import { Navigate, Link } from 'react-router-dom';
+import mainimage from './image2.png'; 
+import './Login.css';
 
 const LoginManager = () => {
   const { login, user } = useAuth();
@@ -13,62 +15,58 @@ const LoginManager = () => {
     e.preventDefault();
     try {
       await login(email, password);
-      setRedirect(true); 
+      setRedirect(true);
     } catch (error) {
       setError(error.message); 
     }
   };
-
 
   if (user && redirect) {
     return <Navigate to="/dorm-manager" replace />;
   }
 
   return (
-    <div>
-      <h2>Log in as:</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      
-      <div style={{ marginTop: '20px' }}>
+    <div className="login-container">
+      <div className="login-image">
+        <img src={mainimage} alt="Login Visual" />
+      </div>
+      <div className="login-form">
+        <h1>Log in</h1>
+        <p>Lorem Ipsum</p>
 
-            <Link to="/login/manager">
-              <button style={{ marginRight: '10px', backgroundColor: 'gray' }}>
-                Dorm manager
-              </button>
-            </Link>
-
-            <Link to="/login/dormer">
-            <button>Dormer</button>
-            </Link>
+        <div className="user-type-options">
+          <div className="user-type-card selected">Dorm Manager</div>
+          <Link to="/login/dormer">
+            <div className="user-type-card">Dormer</div>
+          </Link>
         </div>
 
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
+        {error && <p className="error-text">{error}</p>}
 
-      <div style={{ marginTop: '20px' }}>
+        <form onSubmit={handleLogin}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="input-field"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="input-field"
+          />
+          <button type="submit" className="login-btn">Log in</button>
+        </form>
 
-            <p>Don't have an account?</p>
-
-            <Link to="/signup">
-                <p>Sign up</p>
-            </Link>
+        <p className="signup-link">
+          Don't have an account? <Link to="/signup">Sign up</Link>
+        </p>
       </div>
-
     </div>
   );
 };
